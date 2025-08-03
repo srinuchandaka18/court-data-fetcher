@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court Data Fetcher & Mini-Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>Court Data Fetcher</h1>
+                <p>Search for case details from Delhi High Court</p>
+                <div class="court-info">
+                    <span class="court-badge">Delhi High Court - DEMO MODE</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Search Form -->
+            <div class="search-section">
+                <h2>Case Search</h2>
+                <form id="searchForm" class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="case_type">Case Type *</label>
+                            <select id="case_type" name="case_type" required>
+                                <option value="">Select Case Type</option>
+                                <option value="Civil Appeal">Civil Appeal</option>
+                                <option value="ARB.A.">ARB.A.</option>
+                                <option value="ARB. A. (COMM.)">ARB. A. (COMM.)</option>
+                                <option value="ARB.P.">ARB.P.</option>
+                                <option value="BAIL APPLN.">BAIL APPLN.</option>
+                                <option value="Writ Petition (Civil)">Writ Petition (Civil)</option>
+                                <option value="Criminal Appeal">Criminal Appeal</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="case_number">Case Number *</label>
+                            <input type="text" id="case_number" name="case_number" 
+                                   placeholder="e.g., 123, 456" required
+                                   pattern="[0-9A-Za-z/-]+" maxlength="20">
+                            <small>Numbers, letters, hyphens, and slashes only</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filing_year">Filing Year *</label>
+                            <select id="filing_year" name="filing_year" required>
+                                <option value="">Select Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="search-btn" id="searchBtn">
+                        <span class="btn-text">Search Case</span>
+                        <span class="btn-spinner" style="display: none;">🔍</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading-section hidden">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <h3>Searching case details...</h3>
+                    <p>This may take a few moments. Please do not refresh the page.</p>
+                </div>
+            </div>
+
+            <!-- Error Display -->
+            <div id="error" class="error-section hidden">
+                <div class="error-content">
+                    <div class="error-icon">⚠️</div>
+                    <h3>Search Error</h3>
+                    <p id="error-message"></p>
+                    <button onclick="hideError()" class="retry-btn">Try Again</button>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div id="results" class="results-section hidden">
+                <div class="results-header">
+                    <h2>Case Details</h2>
+                    <div class="search-info">
+                        <small>Search completed in <span id="search-duration">0</span> seconds</small>
+                    </div>
+                </div>
+
+                <div class="case-details">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Parties</label>
+                            <div class="detail-value" id="parties-names">-</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <label>Filing Date</label>
+                            <div class="detail-value" id="filing-date">-</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <label>Next Hearing</label>
+                            <div class="detail-value" id="next-hearing">-</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <label>Status</label>
+                            <div class="detail-value status-value" id="case-status">-</div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Documents -->
+                    <div id="pdf-section" class="documents-section">
+                        <h3>Available Documents</h3>
+                        <div id="pdf-list" class="document-list">
+                            <p class="no-docs">No documents available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button onclick="startNewSearch()" class="action-btn secondary">New Search</button>
+                    <button onclick="printResults()" class="action-btn">Print Details</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Court Data Fetcher. For educational purposes only.</p>
+            <p>This tool fetches publicly available information from court websites.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
